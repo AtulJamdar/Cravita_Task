@@ -22,6 +22,10 @@ const INACTIVE = "border-[var(--color-border)] bg-transparent text-[var(--color-
 
 const INPUT = "bg-[var(--color-bg-elevated)] border border-[var(--color-border)] rounded-lg text-[var(--color-text-primary)] px-3 py-2 text-sm placeholder:text-[var(--color-text-muted)] focus:outline-none focus:border-[var(--color-border-focus)] transition-colors h-9";
 
+import { Search } from "./animate-ui/search";
+import { User } from "./animate-ui/user";
+import { X } from "./animate-ui/x";
+
 export default function FilterBar({ filters, setFilters }) {
   const active = PILLS.find((p) => p.status === filters.status && p.priority === filters.priority) || PILLS[0];
   const hasFilters = filters.search || filters.assignedTo || filters.status || filters.priority;
@@ -31,21 +35,26 @@ export default function FilterBar({ filters, setFilters }) {
       {/* Search inputs */}
       <div className="flex gap-2 flex-wrap">
         <div className="relative flex-1 min-w-40">
-          <span className="absolute left-2.5 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)] text-sm">⌕</span>
+          <span className="absolute left-2.5 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)] flex items-center">
+            <Search animateOnHover size={16} />
+          </span>
           <input type="text" value={filters.search}
             onChange={(e) => setFilters((f) => ({ ...f, search: e.target.value }))}
             placeholder="Search by title..." className={`${INPUT} pl-8 w-full`} />
         </div>
         <div className="relative flex-1 min-w-36">
-          <span className="absolute left-2.5 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)] text-xs">👤</span>
+          <span className="absolute left-2.5 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)] flex items-center">
+            <User animateOnHover size={16} />
+          </span>
           <input type="text" value={filters.assignedTo}
             onChange={(e) => setFilters((f) => ({ ...f, assignedTo: e.target.value }))}
             placeholder="Search assignee..." className={`${INPUT} pl-8 w-full`} />
         </div>
         {hasFilters && (
           <button onClick={() => setFilters({ search: "", assignedTo: "", status: "", priority: "" })}
-            className={`${INPUT} px-3 text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)] transition-colors whitespace-nowrap`}>
-            Clear ×
+            className={`${INPUT} px-3 text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)] transition-colors whitespace-nowrap flex items-center gap-1`}>
+            Clear
+            <X animateOnHover size={14} />
           </button>
         )}
       </div>

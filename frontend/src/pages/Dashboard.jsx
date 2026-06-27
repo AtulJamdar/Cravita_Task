@@ -7,6 +7,8 @@ import TaskTable from "../components/TaskTable";
 import TaskForm from "../components/TaskForm";
 import Modal from "../components/Modal";
 import DeleteConfirm from "../components/DeleteConfirm";
+import { Sparkles } from "../components/animate-ui/sparkles";
+import { Plus } from "../components/animate-ui/plus";
 
 const BASE = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
 
@@ -137,8 +139,8 @@ export default function Dashboard() {
       {/* ── Header ── */}
       <header className="sticky top-0 z-40 bg-[var(--color-bg-surface)] border-b border-[var(--color-border)] px-6 h-14 flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="w-7 h-7 rounded-lg bg-blue-500 flex items-center justify-center text-white text-sm font-bold">
-            ✦
+          <div className="w-7 h-7 rounded-lg bg-blue-500 flex items-center justify-center text-white">
+            <Sparkles animateOnHover size={16} />
           </div>
           <span className="font-bold text-sm tracking-tight text-[var(--color-text-primary)]">TaskBoard</span>
         </div>
@@ -146,7 +148,7 @@ export default function Dashboard() {
           onClick={openCreate}
           className="flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500 hover:bg-blue-600 text-white text-sm font-semibold transition-colors"
         >
-          <span className="text-base leading-none">+</span>
+          <Plus animateOnHover size={16} />
           New Task
         </button>
       </header>

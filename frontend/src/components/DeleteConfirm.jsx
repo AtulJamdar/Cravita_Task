@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Modal from "./Modal";
+import { Trash } from "./animate-ui/trash";
 
 export default function DeleteConfirm({ task, onConfirm, onCancel }) {
   const [loading, setLoading] = useState(false);
@@ -8,8 +9,8 @@ export default function DeleteConfirm({ task, onConfirm, onCancel }) {
   return (
     <Modal title="Delete Task" onClose={onCancel} maxWidth="max-w-sm">
       <div className="text-center py-2">
-        <div className="w-14 h-14 rounded-full bg-red-500/10 flex items-center justify-center mx-auto mb-4 text-2xl">
-          🗑️
+        <div className="w-14 h-14 rounded-full bg-red-500/10 flex items-center justify-center mx-auto mb-4 text-red-400">
+          <Trash animateOnHover size={28} />
         </div>
         <p className="text-sm text-[var(--color-text-secondary)] mb-1">Permanently delete</p>
         <p className="font-bold text-[var(--color-text-primary)] mb-1">"{task.title}"</p>

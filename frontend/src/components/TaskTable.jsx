@@ -1,6 +1,8 @@
 import { format } from "date-fns";
 import { PriorityBadge } from "./StatusBadge";
 import StatusDropdown from "./StatusDropdown";
+import { Pencil } from "./animate-ui/pencil";
+import { Trash } from "./animate-ui/trash";
 
 const TH = "px-4 py-3 text-left text-[10px] font-bold text-[var(--color-text-muted)] uppercase tracking-widest border-b border-[var(--color-border)] whitespace-nowrap";
 const TD = "px-4 py-3.5 border-b border-[var(--color-border)] align-middle";
@@ -70,14 +72,14 @@ export default function TaskTable({ tasks, loading, onEdit, onDelete, onStatusUp
                 <td className={`${TD} text-right`}>
                   <div className="flex items-center justify-end gap-1.5">
                     <button onClick={() => onEdit(task)}
-                      className="w-8 h-8 rounded-lg bg-[var(--color-bg-elevated)] border border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-blue-400 hover:border-blue-500/50 flex items-center justify-center text-sm transition-colors"
+                      className="w-8 h-8 rounded-lg bg-[var(--color-bg-elevated)] border border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-blue-400 hover:border-blue-500/50 flex items-center justify-center transition-colors"
                       title="Edit task">
-                      ✎
+                      <Pencil animateOnHover size={14} />
                     </button>
                     <button onClick={() => onDelete(task)}
-                      className="w-8 h-8 rounded-lg bg-[var(--color-bg-elevated)] border border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-red-400 hover:border-red-500/50 flex items-center justify-center text-sm transition-colors"
+                      className="w-8 h-8 rounded-lg bg-[var(--color-bg-elevated)] border border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-red-400 hover:border-red-500/50 flex items-center justify-center transition-colors"
                       title="Delete task">
-                      🗑
+                      <Trash animateOnHover size={14} />
                     </button>
                   </div>
                 </td>

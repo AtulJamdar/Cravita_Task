@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { StatusBadge } from "./StatusBadge";
+import { ChevronDown } from "./animate-ui/chevron-down";
 
 const STATUSES = ["Pending", "In Progress", "Completed"];
 
@@ -23,7 +24,7 @@ export default function StatusDropdown({ task, onUpdate }) {
         title="Click to change status"
       >
         <StatusBadge status={task.status} />
-        <span className="text-[var(--color-text-muted)] text-[10px] mt-0.5">▾</span>
+        <ChevronDown animateOnHover size={12} className="text-[var(--color-text-muted)]" />
       </button>
 
       {open && (
