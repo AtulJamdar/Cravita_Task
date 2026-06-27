@@ -162,7 +162,7 @@ export default function Dashboard() {
       />
 
       {/* ── Header ── */}
-      <header className="sticky top-0 z-40 bg-[var(--color-bg-surface)] border-b border-[var(--color-border)] px-6 h-14 flex items-center justify-between">
+      <header className="sticky top-0 z-40 bg-white/80 dark:bg-slate-950/80 backdrop-blur-md border-b border-[var(--color-border)]/40 px-6 h-14 flex items-center justify-between">
         <div className="flex items-center gap-3">
           <div className="w-7 h-7 rounded-lg bg-blue-500 flex items-center justify-center text-white">
             <Sparkles animateOnHover size={16} />
