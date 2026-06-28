@@ -23,3 +23,13 @@
   --color-text-secondary: #cbd5e1;
   --color-text-muted: #94a3b8;
 }
+
+/* Date picker calendar icon styling */
+input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: none;
+  cursor: pointer;
+}
+
+.dark input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+}

@@ -4,23 +4,21 @@ import { format } from "date-fns";
 const todayStr = () => format(new Date(), "yyyy-MM-dd");
 
 const FIELD_CLASS =
-  "w-full px-3.5 py-2.5 rounded-sm bg-zinc-950 border border-zinc-800 text-white placeholder:text-zinc-600 text-sm focus:outline-none focus:border-zinc-600 transition-colors";
+  "w-full px-4 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-black dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 text-sm focus:outline-none focus:border-blue-500 dark:focus:border-blue-400 transition-all focus:ring-2 focus:ring-blue-500/10";
 
-const FIELD_ERROR = "border-red-500 focus:border-red-500";
+const FIELD_ERROR = "border-red-500 focus:border-red-500 focus:ring-red-500/10";
 
-const LABEL_CLASS = "text-white text-sm";
+const LABEL_CLASS = "text-sm font-semibold text-black dark:text-white";
 
 const Field = ({ label, required, error, children }) => (
-  <div className="flex flex-col gap-2.5">
+  <div className="flex flex-col gap-2">
     <label className={LABEL_CLASS}>
       {label}
       {required && <span className="text-red-500 ml-1">*</span>}
     </label>
-
     {children}
-
     {error && (
-      <p className="text-xs text-red-400 mt-0.5">
+      <p className="text-xs text-red-500 dark:text-red-400 mt-1 font-medium">
         {error}
       </p>
     )}
@@ -110,8 +108,6 @@ export default function TaskForm({
     }
   };
 
-
-
   const cls = (name) =>
     `${FIELD_CLASS} ${errors[name] ? FIELD_ERROR : ""}`;
 
@@ -158,10 +154,10 @@ export default function TaskForm({
             onChange={(e) => set("priority", e.target.value)}
             className={cls("priority")}
           >
-            <option value="">Select Priority</option>
-            <option value="Low">Low</option>
-            <option value="Medium">Medium</option>
-            <option value="High">High</option>
+            <option value="" className="bg-white dark:bg-slate-800 text-black dark:text-white">Select Priority</option>
+            <option value="Low" className="bg-white dark:bg-slate-800 text-black dark:text-white">Low</option>
+            <option value="Medium" className="bg-white dark:bg-slate-800 text-black dark:text-white">Medium</option>
+            <option value="High" className="bg-white dark:bg-slate-800 text-black dark:text-white">High</option>
           </select>
         </Field>
 
@@ -171,10 +167,10 @@ export default function TaskForm({
             onChange={(e) => set("status", e.target.value)}
             className={cls("status")}
           >
-            <option value="">Select Status</option>
-            <option value="Pending">Pending</option>
-            <option value="In Progress">In Progress</option>
-            <option value="Completed">Completed</option>
+            <option value="" className="bg-white dark:bg-slate-800 text-black dark:text-white">Select Status</option>
+            <option value="Pending" className="bg-white dark:bg-slate-800 text-black dark:text-white">Pending</option>
+            <option value="In Progress" className="bg-white dark:bg-slate-800 text-black dark:text-white">In Progress</option>
+            <option value="Completed" className="bg-white dark:bg-slate-800 text-black dark:text-white">Completed</option>
           </select>
         </Field>
       </div>
@@ -194,7 +190,7 @@ export default function TaskForm({
           type="button"
           onClick={onCancel}
           disabled={loading}
-          className="px-5 py-3 rounded-sm bg-zinc-950 border border-zinc-800 text-zinc-400 text-sm hover:text-white hover:border-zinc-600 transition-colors cursor-pointer"
+          className="px-5 py-2.5 rounded-xl border border-[var(--color-border)] bg-transparent text-black dark:text-white hover:bg-[var(--color-bg-hover)] text-sm font-semibold transition-colors cursor-pointer"
         >
           Cancel
         </button>
@@ -202,12 +198,11 @@ export default function TaskForm({
         <button
           type="submit"
           disabled={loading}
-          className="px-6 py-3 rounded-sm bg-orange-600 hover:bg-orange-500 text-white text-sm font-medium transition-colors flex items-center justify-center gap-2 disabled:opacity-70 cursor-pointer"
+          className="px-6 py-2.5 rounded-xl bg-blue-500 hover:bg-blue-600 text-white text-sm font-semibold transition-colors flex items-center justify-center gap-2 disabled:opacity-70 cursor-pointer"
         >
           {loading && (
             <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
           )}
-
           {initial ? "Save Changes" : "Create Task"}
         </button>
       </div>
