@@ -28,13 +28,13 @@ import { X } from "./animate-ui/x";
 
 export default function FilterBar({ filters, setFilters }) {
   const active = PILLS.find((p) => p.status === filters.status && p.priority === filters.priority) || PILLS[0];
-  const hasFilters = filters.search || filters.assignedTo || filters.status || filters.priority;
+  const hasFilters = filters.search || filters.assignedTo || filters.status || filters.priority || filters.sortByDate;
 
   return (
     <div className="space-y-3">
       {/* Search inputs */}
       <div className="flex gap-2 flex-wrap">
-        <div className="relative flex-1 min-w-40">
+        <div className="relative flex-1 min-w-[160px]">
           <span className="absolute left-2.5 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)] flex items-center">
             <Search animateOnHover size={16} />
           </span>
@@ -42,7 +42,7 @@ export default function FilterBar({ filters, setFilters }) {
             onChange={(e) => setFilters((f) => ({ ...f, search: e.target.value }))}
             placeholder="Search by title..." className={`${INPUT} pl-8 w-full`} />
         </div>
-        <div className="relative flex-1 min-w-36">
+        <div className="relative flex-1 min-w-[140px]">
           <span className="absolute left-2.5 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)] flex items-center">
             <User animateOnHover size={16} />
           </span>
@@ -50,8 +50,22 @@ export default function FilterBar({ filters, setFilters }) {
             onChange={(e) => setFilters((f) => ({ ...f, assignedTo: e.target.value }))}
             placeholder="Search assignee..." className={`${INPUT} pl-8 w-full`} />
         </div>
+        <div className="relative flex-1 min-w-[140px]">
+          <select
+            value={filters.sortByDate || ""}
+            onChange={(e) => setFilters((f) => ({ ...f, sortByDate: e.target.value }))}
+            className={`${INPUT} w-full pr-8 cursor-pointer appearance-none bg-[var(--color-bg-elevated)]`}
+          >
+            <option value="">Sort by: Default</option>
+            <option value="asc">Due Date: Soonest first</option>
+            <option value="desc">Due Date: Latest first</option>
+          </select>
+          <span className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-[var(--color-text-muted)] text-[10px]">
+            ▼
+          </span>
+        </div>
         {hasFilters && (
-          <button onClick={() => setFilters({ search: "", assignedTo: "", status: "", priority: "" })}
+          <button onClick={() => setFilters({ search: "", assignedTo: "", status: "", priority: "", sortByDate: "" })}
             className={`${INPUT} px-3 text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)] transition-colors whitespace-nowrap flex items-center gap-1`}>
             Clear
             <X animateOnHover size={14} />

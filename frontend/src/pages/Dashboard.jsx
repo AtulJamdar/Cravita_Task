@@ -9,21 +9,44 @@ import Modal from "../components/Modal";
 import DeleteConfirm from "../components/DeleteConfirm";
 import { Sparkles } from "../components/animate-ui/sparkles";
 import { Plus } from "../components/animate-ui/plus";
+import { Sun } from "../components/animate-ui/sun";
+import { Moon } from "../components/animate-ui/moon";
 import { Card, CardHeader, CardContent, CardFooter } from "../components/seraui/card";
 
-const BASE = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
+let BASE = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
+if (BASE && BASE.endsWith("/")) {
+  BASE = BASE.slice(0, -1);
+}
+if (BASE && !BASE.endsWith("/api")) {
+  BASE = `${BASE}/api`;
+}
 
 export default function Dashboard() {
   const [tasks, setTasks] = useState([]);
   const [stats, setStats] = useState({ total: 0, pending: 0, inProgress: 0, completed: 0 });
   const [loading, setLoading] = useState(true);
-  const [filters, setFilters] = useState({ search: "", assignedTo: "", status: "", priority: "" });
+  const [filters, setFilters] = useState({ search: "", assignedTo: "", status: "", priority: "", sortByDate: "" });
 
   const [modal, setModal] = useState(null);       // "create" | "edit" | "delete" | null
   const [activeTask, setActiveTask] = useState(null);
   const [formLoading, setFormLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
+
+  const [darkMode, setDarkMode] = useState(() => {
+    return localStorage.getItem("theme") === "dark" || 
+      (!localStorage.getItem("theme") && window.matchMedia("(prefers-color-scheme: dark)").matches);
+  });
+
+  useEffect(() => {
+    if (darkMode) {
+      document.documentElement.classList.add("dark");
+      localStorage.setItem("theme", "dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+      localStorage.setItem("theme", "light");
+    }
+  }, [darkMode]);
 
   // ── Fetch tasks ──────────────────────────────────────────────────────────
   useEffect(() => {
@@ -123,6 +146,15 @@ export default function Dashboard() {
     }
   };
 
+  const handleToggleSort = () => {
+    setFilters((f) => {
+      let nextSort = "";
+      if (f.sortByDate === "") nextSort = "asc";
+      else if (f.sortByDate === "asc") nextSort = "desc";
+      return { ...f, sortByDate: nextSort };
+    });
+  };
+
   // ── Modal helpers ────────────────────────────────────────────────────────
   const openCreate = () => { setActiveTask(null); setModal("create"); };
   const openEdit   = (t)  => { setActiveTask(t);  setModal("edit");   };
@@ -169,13 +201,22 @@ export default function Dashboard() {
           </div>
           <span className="font-bold text-sm tracking-tight text-[var(--color-text-primary)]">TaskBoard</span>
         </div>
-        <button
-          onClick={openCreate}
-          className="flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500 hover:bg-blue-600 text-white text-sm font-semibold transition-colors"
-        >
-          <Plus animateOnHover size={16} />
-          New Task
-        </button>
+        <div className="flex items-center gap-3">
+          <button
+            onClick={() => setDarkMode(!darkMode)}
+            className="w-8 h-8 rounded-lg bg-[var(--color-bg-elevated)] border border-[var(--color-border)] text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] flex items-center justify-center transition-colors cursor-pointer"
+            title="Toggle Theme"
+          >
+            {darkMode ? <Sun size={15} /> : <Moon size={15} />}
+          </button>
+          <button
+            onClick={openCreate}
+            className="flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500 hover:bg-blue-600 text-white text-sm font-semibold transition-colors"
+          >
+            <Plus animateOnHover size={16} />
+            <span className="hidden sm:inline">New Task</span>
+          </button>
+        </div>
       </header>
 
       {/* ── Main ── */}
@@ -187,7 +228,7 @@ export default function Dashboard() {
         </div>
 
         {/* Stat cards */}
-        <div className="flex gap-4 mb-6 flex-wrap">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
           <StatCard type="total"      value={stats.total}      />
           <StatCard type="pending"    value={stats.pending}    />
           <StatCard type="inProgress" value={stats.inProgress} />
@@ -197,7 +238,13 @@ export default function Dashboard() {
         {/* Task panel */}
         {(() => {
           const startIndex = (currentPage - 1) * itemsPerPage;
-          const paginatedTasks = tasks.slice(startIndex, startIndex + itemsPerPage);
+          const sortedTasks = [...tasks].sort((a, b) => {
+            if (!filters.sortByDate) return 0;
+            const dateA = new Date(a.dueDate).getTime();
+            const dateB = new Date(b.dueDate).getTime();
+            return filters.sortByDate === "asc" ? dateA - dateB : dateB - dateA;
+          });
+          const paginatedTasks = sortedTasks.slice(startIndex, startIndex + itemsPerPage);
           const totalPages = Math.max(1, Math.ceil(tasks.length / itemsPerPage));
 
           return (
@@ -217,6 +264,9 @@ export default function Dashboard() {
                 <TaskTable
                   tasks={paginatedTasks}
                   loading={loading}
+                  filters={filters}
+                  darkMode={darkMode}
+                  onToggleSort={handleToggleSort}
                   onEdit={openEdit}
                   onDelete={openDelete}
                   onStatusUpdate={handleStatusUpdate}

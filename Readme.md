@@ -2,6 +2,11 @@
 
 TaskBoard is a modern, responsive, and highly interactive Task Management Dashboard web application. It features a complete CRUD workflow for tasks, priority levels, assignee management, responsive stat cards, status transitions, search/filtering, and animated user-interface interactions.
 
+## 🔗 Deployed Links
+
+- **Frontend (Vercel)**: [https://cravita-task.vercel.app/](https://cravita-task.vercel.app/)
+- **Backend (Render)**: [https://cravita-task.onrender.com](https://cravita-task.onrender.com)
+
 ## 🚀 Tech Stack
 
 ### Frontend
