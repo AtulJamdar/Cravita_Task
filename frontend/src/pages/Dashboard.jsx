@@ -31,6 +31,7 @@ export default function Dashboard() {
   const [activeTask, setActiveTask] = useState(null);
   const [formLoading, setFormLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
+  const [plusHovered, setPlusHovered] = useState(false);
   const itemsPerPage = 5;
 
   const [darkMode, setDarkMode] = useState(() => {
@@ -199,7 +200,7 @@ export default function Dashboard() {
           <div className="w-7 h-7 rounded-lg bg-blue-500 flex items-center justify-center text-white">
             <Sparkles animateOnHover size={16} />
           </div>
-          <span className="font-bold text-sm tracking-tight text-[var(--color-text-primary)]">TaskBoard</span>
+          <span className="font-bold text-sm tracking-tight text-white">TaskBoard</span>
         </div>
         <div className="flex items-center gap-3">
           <button
@@ -211,9 +212,11 @@ export default function Dashboard() {
           </button>
           <button
             onClick={openCreate}
+            onMouseEnter={() => setPlusHovered(true)}
+            onMouseLeave={() => setPlusHovered(false)}
             className="flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500 hover:bg-blue-600 text-white text-sm font-semibold transition-colors"
           >
-            <Plus animateOnHover size={16} />
+            <Plus animate={plusHovered ? "default" : false} size={16} />
             <span className="hidden sm:inline">New Task</span>
           </button>
         </div>
